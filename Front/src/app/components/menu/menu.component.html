@@ -1,0 +1,86 @@
+<nav class="navbar fixed-top navbar-expand-sm navbar-light" style="background-color: #e3f2fd;">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+    aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="#"><img src="/assets/images/App-Logo.jpg" class="d-inline-block align-top app-logo"></a>
+
+  <div class="collapse navbar-collapse" id="navbarToggler">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link" href="#" [routerLink]="['/introduction']">
+          <i class="material-icons">beenhere</i>
+          {{ languageConfig[(getAppLanguage$ | async).Code].menu.introduction }}
+        </a>
+      </li>
+      <ul *ngIf="privileges.includes('UP')" class="navbar-nav">
+        <li *ngIf="(getUserInfo$ | async).Oid" data-toggle="collapse" data-target=".navbar-collapse.show">
+          <a class="nav-link" href="#" [routerLink]="['/user/home']">
+            <i class="material-icons">home</i>
+            {{ languageConfig[(getAppLanguage$ | async).Code].menu.home }}
+          </a>
+        </li>
+        <li *ngIf="(getUserInfo$ | async).Oid" data-toggle="collapse" data-target=".navbar-collapse.show">
+          <a class="nav-link" href="#" [routerLink]="['/user/buy-ico']">
+            <i class="material-icons">monetization_on</i>
+            {{ languageConfig[(getAppLanguage$ | async).Code].menu.buy }}
+          </a>
+        </li>
+      </ul>
+      <ul *ngIf="privileges.includes('AP')" class="navbar-nav">
+        <li *ngIf="(getUserInfo$ | async).Oid" data-toggle="collapse" data-target=".navbar-collapse.show">
+          <a class="nav-link" href="#" [routerLink]="['/admin/home']">
+            <i class="material-icons">home</i>
+            {{ languageConfig[(getAppLanguage$ | async).Code].menu.home }}
+          </a>
+        </li>
+        <li *ngIf="privileges.includes('CA')" data-toggle="collapse" data-target=".navbar-collapse.show">
+          <a class="nav-link" href="#" [routerLink]="['/admin/createAdmin']">
+            <i class="material-icons">add_circle_outline</i>
+            {{ languageConfig[(getAppLanguage$ | async).Code].menu.createAdmin }}
+          </a>
+        </li>
+        <li data-toggle="collapse" data-target=".navbar-collapse.show">
+          <a class="nav-link" href="#" [routerLink]="['/admin/confirmUsers']">
+            <i class="material-icons">how_to_reg</i>
+            {{ languageConfig[(getAppLanguage$ | async).Code].menu.confirmUsers }}
+          </a>
+        </li>
+      </ul>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="nav-item mr-3">
+        <a *ngIf="!(getUserInfo$ | async).Oid" class="nav-link" href="#" [routerLink]="['/user/auth']">
+          {{ languageConfig[(getAppLanguage$ | async).Code].common.login }}
+        </a>
+        <div *ngIf="(getUserInfo$ | async).Oid" class="dropdown">
+          <a href="#" class="nav-link" role="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <i class="material-icons">account_box</i>
+            {{ (getUserInfo$ | async).Name ? (getUserInfo$ | async).Name : 'User' }}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="userDropdown">
+            <button class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+              [routerLink]="['/user/profile']">{{ languageConfig[(getAppLanguage$ | async).Code].menu.profile }}</button>
+            <button class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+              [routerLink]="['/user/settings']">{{ languageConfig[(getAppLanguage$ | async).Code].menu.settings }}</button>
+            <button class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" (click)="logout()"
+              *ngIf="(getUserInfo$ | async).Oid">{{ languageConfig[(getAppLanguage$ | async).Code].common.logout }}</button>
+          </div>
+        </div>
+      </li>
+      <li data-toggle="collapse" data-target=".navbar-collapse.show">
+        <div *ngIf="languages.length > 0" class="dropdown">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ (getAppLanguage$ | async).DisplayText }}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <button class="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" *ngFor="let language of languages; let index = index"
+              (click)="setAppLanguage(language)">{{ language.DisplayText ? language.DisplayText : language.TextoMostrado }}</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

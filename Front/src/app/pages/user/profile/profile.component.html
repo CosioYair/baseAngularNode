@@ -1,0 +1,189 @@
+<div class="container h-100">
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="card align-items-center">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 text-center">
+            <h4>{{ languageConfig[(getAppLanguage$ | async).Code].menu.profile }}</h4>
+          </div>
+          <div class="col-12">
+            <form [formGroup]="form">
+              <div class="row">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.name }}</label>
+                    <input class="form-control"
+                      [ngClass]="{ 'is-invalid': form.get('Name').touched && form.get('Name').invalid }"
+                      formControlName="Name">
+                    <div *ngIf="form.get('Name').errors" class="invalid-feedback">
+                      <div *ngIf="form.get('Name').errors.required">
+                        {{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.required }}</div>
+                      <div *ngIf="form.get('Name').errors.pattern">
+                        {{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.format }}</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-5">
+                      <div class="form-group" *ngIf="genders.length > 0">
+                        <label>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.gender }}</label>
+                        <div class="dropdown">
+                          <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                            id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ genders[form.get('Gender').value - 1].DisplayText }}
+                          </a>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <button class="dropdown-item" *ngFor="let gender of genders; let index = index"
+                              (click)="setFormValue('Gender', gender.Id)">{{ gender.DisplayText }}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                      <div class="form-group">
+                        <label>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.birthdate }}</label>
+                        <input class="form-control" formControlName="Birthdate" (click)="d.toggle()" ngbDatepicker
+                          #d="ngbDatepicker" [minDate]="limitDates.min" [maxDate]="limitDates.max"
+                          [ngClass]="{ 'is-invalid': form.get('Birthdate').touched && form.get('Birthdate').invalid }">
+                        <div *ngIf="form.get('Birthdate').errors" class="invalid-feedback">
+                          <div *ngIf="form.get('Birthdate').errors.required">
+                            {{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.required }}</div>
+                          <div *ngIf="form.get('Birthdate').errors.isMajor">
+                            {{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.isMajor }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.phone }}</label>
+                    <div class="input-group">
+                      <ngx-intl-tel-input
+                        [preferredCountries]="[user.Phone ? user.Phone.countryCode.toLocaleLowerCase() : 'mx']"
+                        [enableAutoCountrySelect]="true" formControlName="Phone"
+                        [cssClass]="'form-control intl-tel-input ' + (form.get('Phone').touched && form.get('Phone').invalid ? 'is-invalid' : '')">
+                      </ngx-intl-tel-input>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <p class="m-0 pr-1 d-inline">{{ languageConfig[(getAppLanguage$ | async).Code].inputs.domicile }}
+                    </p>
+                    <input class="form-control" autocomplete="off" ngx-google-places-autocomplete
+                      #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)">
+                    <app-alert [alertOptions]="alertOptionsDomicile"></app-alert>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group">
+                        <input class="form-control"
+                          [placeholder]="languageConfig[(getAppLanguage$ | async).Code].inputs.country"
+                          formControlName="Country"
+                          [ngClass]="{ 'is-invalid': form.get('Country').touched && form.get('Country').invalid }"
+                          readonly>
+                        <div class="invalid-feedback">
+                          <div>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.required }}</div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <input class="form-control"
+                          [placeholder]="languageConfig[(getAppLanguage$ | async).Code].inputs.state"
+                          formControlName="State"
+                          [ngClass]="{ 'is-invalid': form.get('State').touched && form.get('State').invalid }" readonly>
+                        <div class="invalid-feedback">
+                          <div>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.required }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <div class="form-group">
+                        <input class="form-control"
+                          [placeholder]="languageConfig[(getAppLanguage$ | async).Code].inputs.town"
+                          formControlName="Town"
+                          [ngClass]="{ 'is-invalid': form.get('Town').touched && form.get('Town').invalid }" readonly>
+                        <div class="invalid-feedback">
+                          <div>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.required }}</div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <input class="form-control"
+                          [placeholder]="languageConfig[(getAppLanguage$ | async).Code].inputs.postalCode"
+                          formControlName="PostalCode"
+                          [ngClass]="{ 'is-invalid': form.get('PostalCode').touched && form.get('PostalCode').invalid }"
+                          id="postalCode" readonly>
+                        <div class="invalid-feedback">
+                          <div>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.required }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="form-group">
+                        <input class="form-control"
+                          [placeholder]="languageConfig[(getAppLanguage$ | async).Code].inputs.suburb"
+                          formControlName="Suburb"
+                          [ngClass]="{ 'is-invalid': form.get('Suburb').touched && form.get('Suburb').invalid }"
+                          readonly>
+                        <div class="invalid-feedback">
+                          <div>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.required }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                      <div class="form-group">
+                        <input class="form-control"
+                          [placeholder]="languageConfig[(getAppLanguage$ | async).Code].inputs.street"
+                          formControlName="Street"
+                          [ngClass]="{ 'is-invalid': form.get('Street').touched && form.get('Street').invalid }"
+                          readonly>
+                        <div class="invalid-feedback">
+                          <div>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.required }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-5">
+                      <div class="form-group">
+                        <input class="form-control"
+                          [placeholder]="languageConfig[(getAppLanguage$ | async).Code].inputs.numExt"
+                          formControlName="NumExt"
+                          [ngClass]="{ 'is-invalid': form.get('NumExt').touched && form.get('NumExt').invalid }"
+                          readonly>
+                        <div class="invalid-feedback">
+                          <div>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.required }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                  <label>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.idfront }}</label>
+                  <div class="form-group">
+                    <input type="file" (change)="onFileSelected($event, 1)" accept="image/*" class="form-control h-100"
+                      id="identification">
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                  <label>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.idback }}</label>
+                  <div class="form-group">
+                    <input type="file" (change)="onFileSelected($event, 2)" accept="image/*" class="form-control h-100"
+                      id="identificationback">
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                  <label>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.proof }}</label>
+                  <div class="form-group">
+                    <input type="file" (change)="onFileSelected($event, 3)" accept="image/*" class="form-control h-100"
+                      id="identificationback">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row justify-content-center">
+                <div class="col-12 col-sm-7 col-md-5 col-lg-4 text-center text-sm-left p-0">
+                  <button type="submit" class="btn btn-primary btn-md btn-block" (click)="updateProfile()"
+                    [disabled]="!form.valid">{{ languageConfig[(getAppLanguage$ | async).Code].common.save }}</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

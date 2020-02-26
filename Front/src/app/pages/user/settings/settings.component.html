@@ -1,0 +1,20 @@
+<div class="container h-100">
+  <div class="row h-100 pb-2">
+    <div class="col-3 h-100">
+      <div class="list-group p-2" id="list-tab" role="tablist">
+        <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list"
+          href="#list-home" role="tab" aria-controls="home">{{ languageConfig[(getAppLanguage$ | async).Code].common.loginSecurity }}</a>
+        <a class="list-group-item list-group-item-action" id="list-others-list" data-toggle="list"
+          href="#list-others" role="tab" aria-controls="settings">{{ languageConfig[(getAppLanguage$ | async).Code].common.others }}</a>
+      </div>
+    </div>
+    <div class="col-9">
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+          <app-two-factor-auth-manager></app-two-factor-auth-manager>
+        </div>
+        <div class="tab-pane fade" id="list-others" role="tabpanel" aria-labelledby="list-others-list">{{ languageConfig[(getAppLanguage$ | async).Code].common.others }}...</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="container h-100">
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="card align-items-center">
+      <div class="col-8 col-sm-6 p-3">
+        <img src="/assets/images/Web-Logo.jpg" class="card-img-top" alt="card-account-img">
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <p class="text-center h6">
+              {{ languageConfig[(getAppLanguage$ | async).Code].common.adminPanel }}</p>
+            <form [formGroup]="form">
+              <div class="form-group">
+                <label>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.email }}</label>
+                <input class="form-control"
+                  [ngClass]="{ 'is-invalid': form.get('Email').touched && form.get('Email').invalid }"
+                  formControlName="Email">
+                <div *ngIf="form.get('Email').errors" class="invalid-feedback">
+                  <div *ngIf="form.get('Email').errors.required">
+                    {{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.required }}</div>
+                  <div *ngIf="form.get('Email').errors.pattern">
+                    {{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.format }}</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>{{ languageConfig[(getAppLanguage$ | async).Code].inputs.password }}</label>
+                <input type="password" class="form-control"
+                  [ngClass]="{ 'is-invalid': form.get('Password').touched && form.get('Password').invalid }"
+                  formControlName="Password">
+                <div *ngIf="form.get('Password').errors" class="invalid-feedback">
+                  <div *ngIf="form.get('Password').errors.required">
+                    {{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.required }}</div>
+                  <div *ngIf="form.get('Password').errors.minlength">
+                    {{ languageConfig[(getAppLanguage$ | async).Code].inputs.errors.length + ' ' + languageConfig[(getAppLanguage$ | async).Code].common.atLeast + ' 6 ' +  languageConfig[(getAppLanguage$ | async).Code].common.characters }}
+                  </div>
+                </div>
+              </div>
+              <app-alert [alertOptions]="alertOptions"></app-alert>
+              <div class="form-group">
+                <button type="submit" [disabled]="!form.valid" (click)="login()"
+                  class="btn btn-primary btn-lg btn-block">{{ languageConfig[(getAppLanguage$ | async).Code].common.login }}</button>
+                <p class="text-center">
+                  <a [routerLink]="['/newPassword']"
+                    class="card-link">{{ languageConfig[(getAppLanguage$ | async).Code].common.forgotPassword }}</a>
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
